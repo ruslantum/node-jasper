@@ -132,19 +132,20 @@ function jasper(options) {
 			});
 			cb();
 		}],
-		debug: ['loadJars', function(cb) {
-			if(!options.debug) options.debug = 'off';
-			var levels = ['ALL', 'TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL', 'OFF'];
-			if(levels.indexOf((options.debug+'').toUpperCase()) == -1) options.debug = 'DEBUG';
-			var appender  = java.newInstanceSync('org.apache.log4j.ConsoleAppender');
-			var pattern = java.newInstanceSync('org.apache.log4j.PatternLayout', "%d [%p|%c|%C{1}] %m%n");
-			appender.setLayout(pattern);
-			appender.setThreshold(java.getStaticFieldValue("org.apache.log4j.Level", (options.debug+'').toUpperCase()));
-			appender.activateOptions();
-			var root = java.callStaticMethodSync("org.apache.log4j.Logger", "getRootLogger");
-			root.addAppender(appender);
-			cb();
-		}],
+		/* debug: ['loadJars', function(cb) {
+		*	if(!options.debug) options.debug = 'off';
+		*	var levels = ['ALL', 'TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL', 'OFF'];
+		*	if(levels.indexOf((options.debug+'').toUpperCase()) == -1) options.debug = 'DEBUG';
+		*	var appender  = java.newInstanceSync('org.apache.log4j.ConsoleAppender');
+		*	var pattern = java.newInstanceSync('org.apache.log4j.PatternLayout', "%d [%p|%c|%C{1}] %m%n");
+		*	appender.setLayout(pattern);
+		*	appender.setThreshold(java.getStaticFieldValue("org.apache.log4j.Level", (options.debug+'').toUpperCase()));
+		*	appender.activateOptions();
+		*	var root = java.callStaticMethodSync("org.apache.log4j.Logger", "getRootLogger");
+		*	root.addAppender(appender);
+		*	cb();
+		*}],
+		*/
 		loadClass: ['loadJars', function(cb) {
 			var cl = java.callStaticMethodSync("java.lang.ClassLoader","getSystemClassLoader")
 			for(var i in options.drivers) {
@@ -267,7 +268,7 @@ jasper.prototype.export = function(report, type) {
 				conn.driver = self.drivers[conn.driver];
 			}
 			var connStr = conn.jdbc?conn.jdbc:'jdbc:'+conn.driver.type+'://'+conn.host+':'+conn.port+'/'+conn.dbname;
-			
+
 			if(!validConnections[connStr] || !validConnections[connStr].isValidSync(conn.validationTimeout || 1)){
 				validConnections[connStr] = self.dm.getConnectionSync(connStr, conn.user, conn.pass);
 			}
