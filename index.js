@@ -156,7 +156,7 @@ function jasper(options) {
 		imports: ['loadClass', function(cb) {
 			self.dm = java.import('java.sql.DriverManager');
 			self.jreds = java.import('net.sf.jasperreports.engine.JREmptyDataSource');
-			self.jrjsonef = java.import('net.sf.jasperreports.engine.data.JsonDataSource');
+			//self.jrjsonef = java.import('net.sf.jasperreports.engine.data.JsonDataSource');
 			self.jbais = java.import('java.io.ByteArrayInputStream');
 			self.jcm = java.import('net.sf.jasperreports.engine.JasperCompileManager');
 			self.hm = java.import('java.util.HashMap');
